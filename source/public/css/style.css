@@ -1,0 +1,46 @@
+body{
+    background-color: rgba(152, 3, 198, 0.587);
+}
+
+.nombreUser{
+    font-family: monospace;
+    font-size: large;
+    color: black;
+}
+
+.titleChat{
+    text-align: center;
+}
+
+.containerPadre{
+    text-align: center;
+    background-color: #6c6c6c;
+    height: 700px;
+    width: 50%;
+    margin: auto;
+    overflow-y: scroll;
+}
+
+.container-hodlerChat{
+    height: 24px;
+
+}
+
+#panelLog{
+    font-family: monospace;
+    font-size: large;
+    color: #e48eff;
+    text-align: initial;
+    margin-left: 22px;
+}
+
+#placeholderChat{
+    width: 50%;
+}
+
+
+.container-chat{
+    height: 76%;
+    width: 98%;
+    margin-top: 50px;
+}

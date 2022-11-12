@@ -54,7 +54,11 @@ router.post('/form', async (req,res)=> {
 
 router.get('/render', async (req,res)=>{
     const arrayProductos = await container.getAll()
-    res.render( 'render' , {arrayProductos})
+    res.render('render', {arrayProductos})
+})
+
+router.get('/chat', (req,res)=>{
+    res.render('chat')
 })
 
 export default router

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li>
+               <a href="/">Formulario</a> 
+            </li>
+    
+            <li>
+               <a href="/render">Datos Enviados</a> 
+            </li>
+
+            <li>
+                <a href="/chat">Chat</a> 
+             </li>
+        </ul>
+    </nav>
+
+
+
+<div class="containerPadre"> 
+    <h1 class="titleChat">Chat</h1>
+    <div class="container-chat">
+        <p id="panelLog"></p>
+    </div>
+
+    <div class="container-hodlerChat">
+        <input id="placeholderChat">
+    </div>
+</div>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>
+
+</body>
+</html>
