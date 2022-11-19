@@ -3,10 +3,12 @@ import Contenedor from './class.js'
 import router from './router/productos.router.js'
 import __dirname from './utils.js';
 import { Server, Socket } from 'socket.io';
+import routerCarrito from './router/carrito.router.js';
 
 
 const producto = new Contenedor('archivodeprueba')
 const messages = new Contenedor('historialMensajes')
+
 //  producto.save({
 //     nombre: 'Heladera',
 //     precio: 150000,
@@ -61,3 +63,4 @@ app.set('view engine', 'ejs')
 app.use(express.json()); // Especifica que podemos recibir json
 app.use(express.urlencoded({ extended:true })); // Habilita poder procesar y parsear datos más complejos en la url
 app.use('/', router )
+app.use('/api/carrito', routerCarrito)

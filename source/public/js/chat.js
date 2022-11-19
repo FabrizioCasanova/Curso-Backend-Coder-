@@ -4,7 +4,9 @@ const socket = io({
 })
 let user
 
+const buttonChat = document.getElementById('buttonChat')
 const placeholderChat = document.getElementById('placeholderChat')
+
 swal.fire({
     title: "Nombre de usuario",
     input: "text",
@@ -28,6 +30,15 @@ placeholderChat.addEventListener('keyup', e =>{
             placeholderChat.value = ''
         }
     }
+})
+
+buttonChat.addEventListener('click', () =>{
+ 
+        const holderValue = placeholderChat.value.trim()
+        if(holderValue.length>0){
+            socket.emit('message', {user, message: holderValue})
+            placeholderChat.value = ''
+        }
 })
 
 socket.on('logs', data =>{

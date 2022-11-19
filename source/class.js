@@ -14,7 +14,9 @@ class Contenedor {
         let newId
     
         if(archivoExtraido.length == 0 ){
-            newId = 1
+            newId = 1,
+            code = parseInt(Math.random()*100000000),
+            timestamp = Date.now()
         } else {
             newId = archivoExtraido[archivoExtraido.length-1].id + 1
         }
@@ -25,7 +27,7 @@ class Contenedor {
         archivoExtraido = JSON.stringify(archivoExtraido, null, '\t')
        await fs.promises.writeFile(`${__dirname}/${this.nombreArchivo}.json`, archivoExtraido)
        
-       return newId
+       return newId 
        
     }
 

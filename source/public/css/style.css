@@ -1,20 +1,16 @@
 body{
-    background-color: rgba(152, 3, 198, 0.587);
+    background: gray
 }
 
 .nombreUser{
     font-family: monospace;
     font-size: large;
-    color: black;
-}
-
-.titleChat{
-    text-align: center;
+    color: white;
 }
 
 .containerPadre{
     text-align: center;
-    background-color: #6c6c6c;
+    background-color: #101010;
     height: 700px;
     width: 50%;
     margin: auto;
@@ -26,21 +22,38 @@ body{
 
 }
 
+
 #panelLog{
     font-family: monospace;
     font-size: large;
-    color: #e48eff;
+    color: #e51616;
     text-align: initial;
     margin-left: 22px;
 }
 
 #placeholderChat{
-    width: 50%;
+    height: 100%;
+    width: 50%;    
+    margin-right: 2%;
+    border-radius: 13px;
+
 }
 
+.btn-dark{
+    cursor: pointer;
+    border-radius: 40px;
+}
 
 .container-chat{
     height: 76%;
     width: 98%;
     margin-top: 50px;
+}
+
+.containerTitleChat{
+    background-color: antiquewhite;
+    display: flex;
+    height: 75px;
+    align-items: center;
+    justify-content: center;
 }

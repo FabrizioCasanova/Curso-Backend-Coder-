@@ -1,0 +1,16 @@
+[
+	{
+		"nombre": "Horno",
+		"marca": "Sony",
+		"precio": "30000",
+		"imagen": "https://mir-s3-cdn-cf.behance.net/projects/404/d21f56119324993.Y3JvcCw4NTcsNjcwLDQxMSw1NjI.jpg",
+		"id": 2
+	},
+	{
+		"nombre": "Balon Rihla ",
+		"marca": "Adidas",
+		"precio": "10000",
+		"imagen": "https://media.tycsports.com/files/2022/03/30/408734/pelota-oficial-copa-mundial-de-la-fifa-qatar-2022_862x485.jpg?v=2",
+		"id": 3
+	}
+]
