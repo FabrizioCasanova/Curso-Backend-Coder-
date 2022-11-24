@@ -12,6 +12,8 @@ class Contenedor {
         
         let archivoExtraido = await this.getAll()
         let newId
+        let code
+        let timestamp
     
         if(archivoExtraido.length == 0 ){
             newId = 1,

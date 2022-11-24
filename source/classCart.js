@@ -93,7 +93,5 @@ class contenedorCarrito {
             return true
         }
     }
-
-
 }
 export default contenedorCarrito

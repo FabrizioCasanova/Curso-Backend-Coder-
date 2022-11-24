@@ -1,8 +1,8 @@
-const socket = io()
+ const socket = io()
 
 const productos = document.getElementById('productos')
 
-socket.on('sendProducts', data =>{
+ socket.on('sendProducts', data =>{
     
     let card = ''
     
@@ -14,7 +14,9 @@ socket.on('sendProducts', data =>{
         <p> ${element.marca}  </p>
         <p> ${element.precio} </p>
         `
-    });
+     });
 
-    productos.innerHTML = card
-})
+     productos.innerHTML = card
+ })
+
+

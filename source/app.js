@@ -4,10 +4,14 @@ import router from './router/productos.router.js'
 import __dirname from './utils.js';
 import { Server, Socket } from 'socket.io';
 import routerCarrito from './router/carrito.router.js';
+import ContainerOfSql from './container/containerSql.js';
+import sqliteConfig from './database/knex.js';
 
 
-const producto = new Contenedor('archivodeprueba')
-const messages = new Contenedor('historialMensajes')
+const producto = new ContainerOfSql(sqliteConfig, 'productos')
+const messages = new ContainerOfSql(sqliteConfig, 'mensajes')
+// const producto = new Contenedor('archivodeprueba')
+// const messages = new Contenedor('historialMensajes')
 
 //  producto.save({
 //     nombre: 'Heladera',
@@ -26,16 +30,16 @@ const io = new Server(server)
 
 io.on ('connection', async socket=>{
 
-    const productJson = await producto.getAll()
+    const productJson = await producto.readAllTables()
     io.emit('sendProducts', productJson)
 
 
-    let messagesJson = await messages.getAll()
+    let messagesJson = await messages.readAllTables()
     socket.emit('logs', messagesJson)
 
     socket.on('message', async data =>{    
-        await messages.save(data)
-        let messagesJson = await messages.getAll()
+        await messages.saveElement(data)
+        let messagesJson = await messages.readAllTables()
         io.emit('logs', messagesJson)
  })   
  socket.on('authenticated', data =>{
