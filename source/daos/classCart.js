@@ -1,7 +1,4 @@
-"use strick";
-
 import fs, { stat } from 'fs'
-import { parse } from 'path';
 
 //Creacion de class y metodos
 class contenedorCarrito {

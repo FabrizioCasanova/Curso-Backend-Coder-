@@ -1,6 +1,6 @@
 import { Console } from 'console'
 import fs from 'fs'
-import __dirname from './utils.js'
+import __dirname from '../utils.js'
 
 //Creacion de class y metodos
 class Contenedor {
@@ -12,18 +12,19 @@ class Contenedor {
         
         let archivoExtraido = await this.getAll()
         let newId
-        let code
-        let timestamp
+        
+        object.code = parseInt(Math.random()*100000000),
+        object.timestamp = Date.now()
     
         if(archivoExtraido.length == 0 ){
-            newId = 1,
-            code = parseInt(Math.random()*100000000),
-            timestamp = Date.now()
+            newId = 1
         } else {
             newId = archivoExtraido[archivoExtraido.length-1].id + 1
+
         }
 
         object.id = newId
+        
 
         archivoExtraido.push(object)
         archivoExtraido = JSON.stringify(archivoExtraido, null, '\t')

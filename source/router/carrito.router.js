@@ -1,14 +1,24 @@
 import { Router } from "express";
-import contenedorCarrito from "../classCart.js";
+import contenedorCarrito from "../daos/classCart.js";
 import __dirname from "../utils.js";
-import Contenedor from "../class.js";
-
-const container = new Contenedor('archivodeprueba')
+import Contenedor from "../daos/class.js";
+import exportadoDeContendedores from "../daos/config.js";
 
 const path = __dirname+'/carrito.json'
-const carrito = new contenedorCarrito (path)
+//const container = new Contenedor('archivodeprueba')
+const container = new exportadoDeContendedores[0]('archivodeprueba')
+const carrito = new exportadoDeContendedores[1](path)
+
+
+// const carrito = new contenedorCarrito (path)
 
 const router = Router()
+
+router.get('/', async (req,res) => {
+
+    const arrayCarrito = await carrito.leerCarrito()
+    res.send({arrayCarrito})
+})
 
 router.post('/', async (req, res) => {
    
@@ -46,7 +56,7 @@ router.post('/:idCart/productos/:idProduct', async (req,res) => {
 
     if(ifExistProduct == true){
         const datosCarrito = await carrito.leerCarrito()
-    const ifExist = datosCarrito.some(cart => cart.id == idCart)
+        const ifExist = datosCarrito.some(cart => cart.id == idCart)
     
     if(ifExist === true){
         await carrito.agregarObjeto(idCart, idProduct)

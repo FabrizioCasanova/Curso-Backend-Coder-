@@ -1,13 +1,12 @@
 import { Router } from "express";
-import Contenedor from "../class.js";
-import ContainerOfSql from "../container/containerSql.js";
-import sqliteConfig from "../database/knex.js";
+import exportadoDeContendedores from "../daos/config.js";
 
-const container = new ContainerOfSql(sqliteConfig, 'productos')
+
+const container = new exportadoDeContendedores[0]('productos') 
 
 const router = Router()
 
-let administrador = false 
+let administrador = true 
 
 router.get('/', async (req,res)=>{
   res.render('home')
@@ -15,13 +14,13 @@ router.get('/', async (req,res)=>{
 
 router.post('/form', async (req,res)=> {
     const datos = req.body
-    await container.saveElement(datos)
+    await container.save(datos)
    res.redirect('/')
 })
 
 router.get('/render', async (req,res)=>{
-    const arrayProductos = await container.readAllTables()
-    res.render('render', {arrayProductos})
+    const arrayProductos = await container.getAll()
+    res.send({arrayProductos})
 })
 
 
@@ -29,10 +28,11 @@ router.get('/chat', (req,res)=>{
     res.render('chat')
 })
 
+
 router.get('/:id', async (req,res)=>{
     const {id} = req.params
-    const arrayProductos = await container.readTableById(id)
-    if(!(null == arrayProductos)){  
+    const arrayProductos = await container.getById(id)
+    if(arrayProductos != null){  
        res.send(arrayProductos)
     } else {
         res.send('Objeto no encontrado')
@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
     }
 
     const objeto = req.body;
-    await container.saveElement(objeto)
+    await container.save(objeto)
     res.send(objeto)
 
 })
@@ -61,7 +61,7 @@ router.put('/:id', async (req,res)=>{
     
    
     let objeto = req.body;
-    await container.updateElement(objeto, id)
+    await container.updateFile(objeto, id)
     res.send(`Objeto con ID ${id} Actualizado`)
 })
 
@@ -73,10 +73,10 @@ router.delete('/:id', async (req,res) =>{
         return res.send({error: -1, descripcion: `Ruta: '/${id}', Metodo DELETE no autorizado`})
     }
 
-    const arrayProductos = await container.readAllTables()
+    const arrayProductos = await container.getAll()
     const longitudArray = arrayProductos.length //previo a borrar el producto
-    await container.deleteElementById(id)
-    const newArrayProductos = await container.readAllTables()
+    await container.deleteById(id)
+    const newArrayProductos = await container.getAll()
     if(newArrayProductos.length < longitudArray){
         res.send(`objeto con ID ${id} eliminado`)
     } else {

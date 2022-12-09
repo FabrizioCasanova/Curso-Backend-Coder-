@@ -42,13 +42,15 @@ buttonChat.addEventListener('click', () =>{
 })
 
 socket.on('logs', data =>{
+
     const panelLog = document.getElementById('panelLog')
     let message = ''
+
     data.forEach ( msg =>{
         message += `<p>  <span class = "nombreUser"> ${msg.user} dice: </span> ${msg.message} </p>`
     })
-    panelLog.innerHTML = message
     
+    panelLog.innerHTML = message
     panelLog.scrollTop = panelLog.scrollHeight
 })   
 
