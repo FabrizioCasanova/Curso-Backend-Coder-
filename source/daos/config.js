@@ -4,7 +4,7 @@ import contenedorCarrito from './classCart.js'
 import ContendedorMongo from './classMongo.js'
 import contenedorCarritoMongo from './classCartMongo.js'
 
-const persistencia = "Fs" // Puede cambiar a fs // 
+const persistencia = "Mongo" // Puede cambiar a fs // 
 let exportadoDeContendedores
 
 if( persistencia === "Mongo"){

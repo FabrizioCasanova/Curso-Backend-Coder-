@@ -5,12 +5,10 @@ import Contenedor from "../daos/class.js";
 import exportadoDeContendedores from "../daos/config.js";
 
 const path = __dirname+'/carrito.json'
-//const container = new Contenedor('archivodeprueba')
+
 const container = new exportadoDeContendedores[0]('archivodeprueba')
 const carrito = new exportadoDeContendedores[1](path)
 
-
-// const carrito = new contenedorCarrito (path)
 
 const router = Router()
 
@@ -39,7 +37,7 @@ router.delete('/:id', async (req,res) =>{
     }
 })
 
-// metodo no terminado : 
+
 router.get('/:id/productos', async (req,res) =>{
     const {id} = req.params
     const datosCarrito = await carrito.leerCarrito()
