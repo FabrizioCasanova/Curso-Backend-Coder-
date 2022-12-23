@@ -15,12 +15,11 @@ form.addEventListener('submit', async e => {
 
     if(response.status === "Success") {
 
-        const user = await fetch('../sessions/user').then(result => result.json())
-
         Swal.fire({
             icon: 'success',
             title: "Usuario Creado."
-     })
+
+    })
     }
     
     form.reset()

@@ -9,7 +9,8 @@ import { Server } from 'socket.io';
 import routerCarrito from './router/carrito.router.js';
 import ContendedorMessageMongo from './daos/classMessagesMongo.js';
 import { schema, normalize, denormalize } from "normalizr";
-
+import passport from 'passport';
+import initPassport from './config/passport.config.js';
 
 const producto = new exportadoDeContendedores[0]('productos')
 const messages = new ContendedorMessageMongo()
@@ -22,12 +23,16 @@ const io = new Server(server)
 app.use(session({
   store: MongoStore.create({
       mongoUrl: 'mongodb+srv://DataBaseCoder:6xjrrip30r3RbqCT@codercluster.vgx1dq2.mongodb.net/DatabaseMongo?retryWrites=true&w=majority',
-      ttl: 60
+      ttl: 60*60*24*7
     }), 
   secret: 'greas1f651rw6y4he6y4645',
   resave: false,
   saveUninitialized:false
 }))
+
+initPassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(express.json()); // Especifica que podemos recibir json
 app.use(express.urlencoded({ extended: true })); // Habilita poder procesar y parsear datos más complejos en la url

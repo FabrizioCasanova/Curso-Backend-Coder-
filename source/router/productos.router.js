@@ -18,7 +18,7 @@ router.post('/form', async (req,res)=> {
    res.redirect('/')
 })
 
-router.get('/render', async (req,res)=>{
+router.get('/renderProducts', async (req,res)=>{
     const arrayProductos = await container.getAll()
     res.send({arrayProductos})
 })
