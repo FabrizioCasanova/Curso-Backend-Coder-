@@ -19,9 +19,19 @@ form.addEventListener('submit', async e => {
             icon: 'success',
             title: "Usuario Creado."
 
-    })
-    }
+    }).then(async()=>{
+    
+        window.location = '../api/../form/login'
+    
+    })} else {
+
+        Swal.fire({
+            icon: 'error',
+            title: "Faltan datos en el formulario."
+
+    })}
     
     form.reset()
+    
 })
 

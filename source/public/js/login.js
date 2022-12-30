@@ -1,5 +1,5 @@
 const form = document.getElementById('formLoginUsers')
-const divLogin = document.getElementById('divLogin')
+
 
 form.addEventListener('submit', async e => {
     e.preventDefault()
@@ -21,9 +21,17 @@ form.addEventListener('submit', async e => {
         Swal.fire({
             icon: 'success',
             title: `Bienvenido ${user.name}`
-     })
+     }).then( async ()=>{
 
-    }
+        window.location = '/'
+    
+    })} else {
+
+        Swal.fire({
+            icon: 'error',
+            title: "Datos faltantes o incorrectos en el formulario."
+
+    })}
 
     form.reset()
 })

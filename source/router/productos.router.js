@@ -8,7 +8,7 @@ const router = Router()
 
 let administrador = true 
 
-router.get('/', async (req,res)=>{
+router.get('/home', async (req,res)=>{ // esta es la ruta base original (cambiarla mas adelante)
   res.render('home')
 })
 

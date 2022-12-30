@@ -14,7 +14,7 @@ router.get('/failedregister', (req,res) => {
     res.status(500).send({status: "error", error: "Proceso de Passport fallido"})
 })
 
-router.post('/login', passport.authenticate('login'), async (req, res) => {
+router.post('/login', passport.authenticate('login', {failureRedirect: '/api/sessions/failedlogin'}), async (req, res) => {
 
 
     req.session.user = {
@@ -25,6 +25,11 @@ router.post('/login', passport.authenticate('login'), async (req, res) => {
     
 
     res.send({status: "Success", mesagge: " Ya estas logueado"})
+})
+
+router.get('/failedlogin', (req,res) => {
+    console.error('Error en el funcionamiento de Passport')
+    res.status(500).send({status: "error", error: "Proceso de Passport fallido"})
 })
 
 router.get('/connected', (req,res) => {
@@ -39,7 +44,14 @@ router.get('/connected', (req,res) => {
 
 router.get('/user', (req,res) => {
 
-    res.send(req.session.user)
+    if(!(req.session.user)){
+
+        res.send({status: "error", mesagge: "Sesion Inexistente"})
+
+    } else {
+        res.send(req.session.user)
+    }
+    
 
 })
 

@@ -1,4 +1,5 @@
- const socket = io()
+const socket = io()
+
 
 const botonDesloguearse = document.getElementById('botonDesloguearse')
 
@@ -23,16 +24,29 @@ const productos = document.getElementById('productos')
 
  botonDesloguearse.addEventListener('click', async ()=> {
 
-    const user = await fetch('api/sessions/user').then(result => result.json())
+   const user = await fetch('api/sessions/user').then(result => result.json())
 
-    Swal.fire({
-        icon: 'success',
-        title: `Hasta luego ${user.name}`
- }).then( async ()=>{
+   if(!(user.status === "error")){
 
-    await fetch('api/sessions/logout').then(result => result.json())
-    window.location = 'api/form/login'
+       Swal.fire({
+           icon: 'success',
+           title: `Hasta luego ${user.name}`
+    }).then( async ()=>{
+   
+       await fetch('api/sessions/logout').then(result => result.json())
+       window.location = 'api/form/login'
     
- })    
+    })    
+
+   } else {
+
+       Swal.fire({
+           icon: 'error',
+           title: `Sesion de usuario inexistente`
+       })
+
+   }
+
+  
  })
 
