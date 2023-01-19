@@ -4,7 +4,7 @@ import MongoStore from 'connect-mongo';
 import exportadoDeContendedores from './daos/config.js';
 import router from './router/productos.router.js'
 import routerSessions from './router/sessions.router.js';
-import __dirname from './utils.js';
+import __dirname, { addLogger, infoPeticionRuta } from './utils.js';
 import { Server } from 'socket.io';
 import routerCarrito from './router/carrito.router.js';
 import ContendedorMessageMongo from './daos/classMessagesMongo.js';
@@ -13,16 +13,62 @@ import passport from 'passport';
 import initPassport from './config/passport.config.js';
 import dotenv from './config/dotenv.js';
 import {fork} from 'child_process'
+import os from 'os';
+import cluster from 'cluster';
+import args from 'minimist';
 
 const producto = new exportadoDeContendedores[0]('productos')
 const messages = new ContendedorMessageMongo()
 
 const app = express()
 
-const PORT = dotenv.app.PORT
+let server
 
+const PORT = dotenv.app.PORT || 8080
 
-const server = app.listen(PORT, () => console.log('Estoy escuchando en express'))
+//const server = app.listen(PORT, () => console.log('Estoy escuchando en express'))
+
+const modulesCpus = os.cpus().length;
+
+const argumentos = args(process.argv.slice(2), {
+    default: {
+        modo: "FORK"
+    }
+})
+
+if(argumentos.modo === "CLUSTER"){
+
+    console.log("Ejecutando el servidor en modo CLUSTER")
+
+    if (cluster.isPrimary) {
+    
+        console.log(`El proceso primario con el PID ${process.pid} ha sido ejecutado`)
+        
+        for (let i = 0; i < modulesCpus; i++) {
+            cluster.fork();
+        }
+        
+        cluster.on('exit', (worker) =>{
+            
+            console.log(`El proceso con el PID ${worker.process.pid} dejo de funcionar `)
+            
+            cluster.fork();
+        })
+    
+    } else {
+    
+        console.log(`El proceso worker con el PID ${process.pid} ha sido ejecutado`)
+    
+       server = app.listen(PORT,()=> console.log(` Escuchando en el puerto ${PORT}`))
+    }
+
+} else if (argumentos.modo === "FORK"){
+
+    server = app.listen(PORT,()=> console.log(` Escuchando en el puerto ${PORT}`))
+
+    console.log("Ejecutando servidor en modo FORK")
+}
+
 const io = new Server(server)
 
 app.use(session({
@@ -39,6 +85,8 @@ app.use(session({
 initPassport()
 app.use(passport.initialize())
 app.use(passport.session())
+app.use(addLogger)
+app.use(infoPeticionRuta)
 
 app.use(express.json()); // Especifica que podemos recibir json
 app.use(express.urlencoded({ extended: true })); // Habilita poder procesar y parsear datos más complejos en la url
@@ -47,19 +95,50 @@ app.get('/info', async (req,res) =>{
   res.render('info')
 })
 
-app.get('/', async (req,res) => { //esta ruta es '/api/random', cambiarla mas adelante.
+app.get('/api/random', async (req,res) => { 
 
   const {cant} = req.query
 
-  const processChild = fork(__dirname + '/calculoPesado.js')
-  processChild.send({cant})
-  processChild.on('message', object => {
+  
+    const obj = {
 
-    res.send(object)
+    }
 
-  })
+    for (let i = 1; i <= 1000; i++) {
+
+        obj[i] = 0
+
+    }
+
+    if (cant!== undefined) {
+
+        for (let i = 1; i <= cant; i++) {
+
+            const numeroRandom = Math.floor(Math.random() * 1000 + 1)
+
+            obj[numeroRandom]++
+
+        }
+
+    } else {
+
+        for (let i = 1; i <= 100000000; i++) {
+
+            const numeroRandom = Math.floor(Math.random() * 1000 + 1)
+
+            obj[numeroRandom]++
+
+        }
+
+    }
+    
+    res.send(obj)
 
 })
+
+  // const processChild = fork(__dirname + '/calculoPesado.js')
+  //processChild.send({cant})
+  //processChild.on('message', object => {
 
 app.use('/', router)
 app.use('/api/carrito', routerCarrito)
@@ -129,3 +208,8 @@ io.on('connection', async socket => {
 
   })
 })
+
+app.all("*", (req, res)=> {
+  req.logger.warn("Este metodo es inexistente para esta ruta")
+  res.send({status: "error", error: "Error"})
+}) 

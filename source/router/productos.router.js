@@ -8,7 +8,7 @@ const router = Router()
 
 let administrador = true 
 
-router.get('/home', async (req,res)=>{ // esta es la ruta base original (cambiarla mas adelante)
+router.get('/', async (req,res)=>{ 
   res.render('home')
 })
 
@@ -31,17 +31,20 @@ router.get('/chat', (req,res)=>{
 
 router.get('/:id', async (req,res)=>{
     const {id} = req.params
-    const arrayProductos = await container.getById(id)
-    if(arrayProductos != null){  
-       res.send(arrayProductos)
-    } else {
+    const object = await container.getById(id)
+    if(object != null){  
+       res.send(object)
+    } else if (req.url !== "/favicon.ico") { // Parche momentaneo de favicon (borrarlo mas adelante)
+        req.logger.error("Objeto no encontrado")
         res.send('Objeto no encontrado')
+        
     }   
 })
 
 router.post('/', async (req, res) => {
 
     if(administrador === false ){
+        req.logger.error("Ruta: '/', Metodo POST no autorizado")
         return res.send({error: -1, descripcion: "Ruta: '/', Metodo POST no autorizado"})
     }
 
@@ -56,6 +59,7 @@ router.put('/:id', async (req,res)=>{
     const {id} = req.params;
     
     if(administrador === false ){
+        req.logger.error(`Ruta: '/${id}', Metodo PUT no autorizado`)
         return res.send({error: -1, descripcion: `Ruta: '/${id}', Metodo PUT no autorizado`})
     }
     
@@ -70,6 +74,7 @@ router.delete('/:id', async (req,res) =>{
     const {id} = req.params
 
     if(administrador === false ){
+        req.logger.error(`Ruta: '/${id}', Metodo DELETE no autorizado`)
         return res.send({error: -1, descripcion: `Ruta: '/${id}', Metodo DELETE no autorizado`})
     }
 
@@ -80,6 +85,7 @@ router.delete('/:id', async (req,res) =>{
     if(newArrayProductos.length < longitudArray){
         res.send(`objeto con ID ${id} eliminado`)
     } else {
+        req.logger.error("No se encontro el objeto")
         res.send('No se encontro el objeto')
     }
 })
