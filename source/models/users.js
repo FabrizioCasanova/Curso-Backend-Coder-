@@ -5,18 +5,23 @@ const collection = 'Usuarios'
 const schema = new mongoose.Schema({
     nombre:{
         type: String,
-        require: true
+        required: true
     },
 
     apellido:{
         type: String,
-        require: true
+        required: true
     },
 
     email:{
         type: String,
-        require: true,
+        required: true,
         unique: true
+    },
+
+    image:{
+        type: String,
+        required: true
     },
 
     role: {
@@ -25,7 +30,12 @@ const schema = new mongoose.Schema({
     },
     
     password: {
-        type: String
+        type: String,
+        required: true
+    },
+
+    cart:{
+        type: Array
     }
 })
 

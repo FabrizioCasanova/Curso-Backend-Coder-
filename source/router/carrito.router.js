@@ -1,8 +1,10 @@
-import { Router } from "express";
+import { application, Router } from "express";
 import contenedorCarrito from "../daos/classCart.js";
 import __dirname from "../utils.js";
 import Contenedor from "../daos/class.js";
 import exportadoDeContendedores from "../daos/config.js";
+import modelUsers from "../models/users.js";
+import nodemailer from 'nodemailer'
 
 const path = __dirname+'/carrito.json'
 
@@ -84,6 +86,71 @@ router.delete('/:idCart/productos/:idProduct', async (req,res) => {
     } else {
         res.send(`El producto con ID ${idProduct} no se encuentra en el carrito con ID ${idCart}`)
     }
+})
+
+router.get('/cart', async (req,res)=> {
+    const {id} = req.session.user
+    const usuario = await modelUsers.findOne({id})
+    res.render('cart', {cart: usuario.cart})
+})
+
+router.post('/cart', async (req,res) => {
+    const orden = req.body
+    
+    const {id} = req.session.user
+
+   const usuario = await modelUsers.findOne({id})
+   
+    const {cart} = usuario
+
+    cart.push(orden)
+
+   await modelUsers.updateOne({id},{$set:{cart:cart}})
+
+  
+})
+
+const transport = nodemailer.createTransport({
+    service: 'gmail',
+    port: 587,
+    auth: {
+        user: 'fabri.casanova2003@gmail.com',
+       // pass:                                   
+    }
+})
+
+router.post('/email', async (req,res)=> {
+
+    const {id} = req.session.user
+
+    const usuario = await modelUsers.findOne({id})
+    const nombreUsuario = usuario.nombre
+    const emailUsuario = usuario.email
+    const arrayCarrito = usuario.cart
+
+    
+    const div = document.createElement('div')
+    
+    div.innerHTML += `
+
+    <p> Nueva compra hecha por ${nombreUsuario} ${emailUsuario} </p>
+
+    `
+
+    arrayCarrito.forEach(element => {
+
+        div.innerHTML +=
+
+        `
+       <p> ${element.titulo} </p>
+       <p> ${element.cantidad} </p>        
+       <p> ${element.precio} </p>
+       <img src="${element.imagen}" alt="">
+
+        ` 
+     })
+
+     const html = `${div.outerHTML}`
 })
 
 export default router

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/svg+xml" href="https://example.com/image.svg%22%3E">
+    <link rel="icon" type="image/svg+xml" href="https://cdn-icons-png.flaticon.com/512/149/149229.png">
     <title>Document</title>
 </head>
 <body>
@@ -24,7 +24,7 @@
              </li>
 
              <li>
-                <a href="/api/form/perfil">perfil</a>
+                <a href="perfil">perfil</a>
              </li>
 
              <li>
@@ -38,25 +38,19 @@
         </ul>
     </nav>
     
-    <h1>Form para Loguearse</h1>
+    <h1>Tu perfil</h1>
 
-<form id="formLoginUsers">
-
-    <label>Correo electronico</label>
-    <input name="email">
-    <label>Contraseña</label>
-    <input name="password">
-    <input type="submit">
+    <p>Nombre: <%= perfil.name %> </p>
+    <p>Email: <%= perfil.email %></p>
     
-</form>
+    <div>
+    <p>Foto de perfil:</p>
+    <img src=<%= perfil.image %>>
+    </div>
 
 
-
-<script src="../../js/login.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 </body>
 </html>
-
-

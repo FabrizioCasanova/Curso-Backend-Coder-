@@ -1,9 +1,10 @@
 import { Router } from "express";
 import passport from "passport";
+import uploader from "../service/upload.js";
 
 const router = Router()
 
-router.post('/register', passport.authenticate('register', {failureRedirect: '/api/sessions/failedregister'}),  async (req, res) => {
+router.post('/register', uploader.single("image"), passport.authenticate('register', {failureRedirect: '/api/sessions/failedregister'}),  async (req, res) => {
     const user = req.user
     res.send({ status: "Success", mesagge: "Usuario Creado", payload: user._id })
 
@@ -20,6 +21,8 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/api/ses
     req.session.user = {
         name: `${req.user.nombre} ${req.user.apellido}`,
         email: req.user.email,
+        image: req.user.image,
+        id: req.user._id,
         role: req.user.role
     }
     

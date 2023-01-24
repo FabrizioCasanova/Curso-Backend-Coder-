@@ -17,6 +17,7 @@ import os from 'os';
 import cluster from 'cluster';
 import args from 'minimist';
 
+
 const producto = new exportadoDeContendedores[0]('productos')
 const messages = new ContendedorMessageMongo()
 
@@ -70,6 +71,8 @@ if(argumentos.modo === "CLUSTER"){
 }
 
 const io = new Server(server)
+
+export default server
 
 app.use(session({
   store: MongoStore.create({
@@ -157,6 +160,17 @@ app.get('/api/form/login', async (req,res) =>{
   res.render('login')
 })
 
+
+app.get('/api/form/perfil', async (req,res) => {
+  
+  const perfil = req.session.user
+
+if (perfil === undefined) {
+    res.render("home")
+} else 
+{res.render("perfil", { perfil })}
+})
+
 app.get('/api/form/chat', async (req,res)=>{
   res.render('formChat')
 })
@@ -213,3 +227,13 @@ app.all("*", (req, res)=> {
   req.logger.warn("Este metodo es inexistente para esta ruta")
   res.send({status: "error", error: "Error"})
 }) 
+
+router.get('/failedregister', (req,res) => {
+  console.error('Error en el funcionamiento de Passport')
+  res.status(500).send({status: "error", error: "Proceso de Passport fallido"})
+})
+
+
+
+
+  

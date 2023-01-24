@@ -2,6 +2,7 @@ import passport from "passport";
 import local from 'passport-local'
 import { hashForPassword, validationOfPassword  } from "../utils.js";
 import modelUsers from "../models/users.js";
+import server from "../app.js";
 
 
 const localStrategy = local.Strategy
@@ -24,6 +25,7 @@ function initPassport (){
         nombre,
         apellido,
         email,
+        image: `${req.protocol}://${req.hostname}:${server.address().port}/images/${req.file.filename}`,
         password:passwordHashed
     }
 
