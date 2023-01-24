@@ -89,9 +89,16 @@ router.delete('/:idCart/productos/:idProduct', async (req,res) => {
 })
 
 router.get('/cart', async (req,res)=> {
-    const {id} = req.session.user
-    const usuario = await modelUsers.findOne({id})
-    res.render('cart', {cart: usuario.cart})
+
+    const perfil = req.session.user
+  
+    if(perfil === undefined){
+        res.redirect('../form/login')
+    } else {
+        const usuario = await modelUsers.findOne({_id: perfil.id})
+        res.render('cart', {cart: usuario.cart})
+    }
+    
 })
 
 router.post('/cart', async (req,res) => {
@@ -115,42 +122,46 @@ const transport = nodemailer.createTransport({
     port: 587,
     auth: {
         user: 'fabri.casanova2003@gmail.com',
-       // pass:                                   
+        pass: 'lljjegdhmjfztzmi'                                   
     }
 })
 
-router.post('/email', async (req,res)=> {
+router.get('/email', async (req,res)=> {
 
     const {id} = req.session.user
 
     const usuario = await modelUsers.findOne({id})
     const nombreUsuario = usuario.nombre
+    const apellidoUsuario = usuario.apellido
     const emailUsuario = usuario.email
     const arrayCarrito = usuario.cart
 
+    let div = ''
     
-    const div = document.createElement('div')
-    
-    div.innerHTML += `
+    div += `
 
-    <p> Nueva compra hecha por ${nombreUsuario} ${emailUsuario} </p>
+    <p> Nueva compra hecha por ${nombreUsuario} ${apellidoUsuario} ${emailUsuario} </p>
 
     `
-
     arrayCarrito.forEach(element => {
-
-        div.innerHTML +=
-
+        div +=
         `
        <p> ${element.titulo} </p>
        <p> ${element.cantidad} </p>        
        <p> ${element.precio} </p>
        <img src="${element.imagen}" alt="">
-
         ` 
      })
 
-     const html = `${div.outerHTML}`
+     await transport.sendMail({
+        from: "Fabrizio Casanova <fabri.casanova2003@gmail.com>",
+        to: `${emailUsuario}`,
+        subject: "Orden de compra",
+        html: div
+     })
+
+     res.send({status: "success", message: "Correo enviado"})
+
 })
 
 export default router

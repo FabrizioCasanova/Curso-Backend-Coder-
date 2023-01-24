@@ -166,7 +166,7 @@ app.get('/api/form/perfil', async (req,res) => {
   const perfil = req.session.user
 
 if (perfil === undefined) {
-    res.render("home")
+    res.redirect("/api/form/login")
 } else 
 {res.render("perfil", { perfil })}
 })
@@ -224,7 +224,7 @@ io.on('connection', async socket => {
 })
 
 app.all("*", (req, res)=> {
-  req.logger.warn("Este metodo es inexistente para esta ruta")
+  req.logger.warn(`Este metodo es inexistente para esta ruta ${req.url} | Metodo ${req.method} `)
   res.send({status: "error", error: "Error"})
 }) 
 
