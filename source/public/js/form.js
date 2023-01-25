@@ -61,6 +61,13 @@ socket.on('sendProducts', data => {
 
         })
 
+        if(parseInt(contador.innerText) === 0){
+                console.log(0)
+            
+        } else {
+            console.log(10)
+        }
+
         botonAgregarCarrito.addEventListener('click', async ()=> {
             const card = data[indice]
 
@@ -74,13 +81,34 @@ socket.on('sendProducts', data => {
 
             }
 
-            fetch('api/carrito/cart', {
-                method: 'POST',
-                body: JSON.stringify(orden),
-                headers: {
-                'Content-Type': 'application/json'
-                }   
+            if(parseInt(contador.innerText) === 0){
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: "Selecciona la cantidad de productos a comprar."
             })
+            
+            } else {
+                fetch('api/carrito/cart', {
+                    method: 'POST',
+                    body: JSON.stringify(orden),
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }   
+                })
+    
+                Swal.fire({
+                    icon: 'success',
+                    title: "Producto/s agregado/s a tu carrito."    
+                }).then(async()=>{
+                
+                    window.location = '../../api/carrito/cart'
+                
+                })
+            }
+
+
+            
         })
 
     })

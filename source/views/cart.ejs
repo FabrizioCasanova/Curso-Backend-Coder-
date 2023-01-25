@@ -17,25 +17,25 @@
             <li>
                <a href="/">Formulario</a> 
             </li>
-    
-            <li>
-               <a href="/renderProducts">Datos Enviados</a> 
-            </li>
 
             <li>
                 <a href="/chat">Chat</a> 
              </li>
 
              <li>
-                <a href="/api/form/perfil">perfil</a>
+                <a href="/api/form/perfil">Perfil</a>
              </li>
 
              <li>
-                <a href="api/form/register">Registrate</a>
+               <a href="cart">Carrito</a>
              </li>
 
              <li>
-                <a href="api/form/login">Logueate</a>
+                <a href="../form/register">Registrate</a>
+             </li>
+
+             <li>
+                <a href="../form/login">Logueate</a>
              </li>
 
         </ul>
@@ -50,9 +50,11 @@
         <p>Precio: <%= element.precio %></p>
         <% }) %> 
    
-    <button id="botonFinalizarCompra" type="submit">Finalizar Compra</button>
+    <button id="botonEliminarProductosCarrito" type="submit">Eliminar productos del carrito</button>    
+    <button id="botonFinalizarCompra"  type="submit">Finalizar Compra</button>
         
     <script src="../../js/cart.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 </html>

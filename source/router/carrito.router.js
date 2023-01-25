@@ -104,15 +104,15 @@ router.get('/cart', async (req,res)=> {
 router.post('/cart', async (req,res) => {
     const orden = req.body
     
-    const {id} = req.session.user
+    const perfil = req.session.user
 
-   const usuario = await modelUsers.findOne({id})
+   const usuario = await modelUsers.findOne({_id: perfil.id})
    
     const {cart} = usuario
 
     cart.push(orden)
 
-   await modelUsers.updateOne({id},{$set:{cart:cart}})
+   await modelUsers.updateOne({_id: perfil.id},{$set:{cart:cart}})
 
   
 })
@@ -128,14 +128,20 @@ const transport = nodemailer.createTransport({
 
 router.get('/email', async (req,res)=> {
 
-    const {id} = req.session.user
+    const perfil = req.session.user
 
-    const usuario = await modelUsers.findOne({id})
+    const usuario = await modelUsers.findOne({_id: perfil.id})
     const nombreUsuario = usuario.nombre
     const apellidoUsuario = usuario.apellido
     const emailUsuario = usuario.email
-    const arrayCarrito = usuario.cart
+    let arrayCarrito = usuario.cart
 
+    if(arrayCarrito.length === 0){
+
+        res.status(400).send({status: "Success", message: "No hay elementos para comprar"})    
+
+    } else {
+    
     let div = ''
     
     div += `
@@ -160,7 +166,36 @@ router.get('/email', async (req,res)=> {
         html: div
      })
 
-     res.send({status: "success", message: "Correo enviado"})
+     arrayCarrito = []
+
+    await modelUsers.updateOne({_id: perfil.id}, {$set:{cart: arrayCarrito}})
+    
+    res.status(200).send({status: "Success", message: "Correo enviado"})
+    }
+
+})
+
+router.get('/borrarCarrito', async (req,res) => {
+
+    const perfil = req.session.user
+
+    const usuario = await modelUsers.findOne({_id: perfil.id})
+
+    let arrayCarrito = usuario.cart
+
+    if(arrayCarrito.length === 0){
+        res.status(400).send({status: "Success", message: "No hay elementos para eliminar"})    
+    } else {
+
+    arrayCarrito = []
+
+    await modelUsers.updateOne({_id: perfil.id}, {$set:{cart: arrayCarrito}})
+
+    res.status(200).send({status: "Success", message: "Productos eliminados del carrito"})
+
+    }
+
+    
 
 })
 
