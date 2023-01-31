@@ -1,25 +1,26 @@
 import express from 'express'
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
-import exportadoDeContendedores from './daos/config.js';
+import { servicioProductos } from './service/repositorios/servicios.js';
+// import exportadoDeContendedores from './daos/config.js';
 import router from './router/productos.router.js'
 import routerSessions from './router/sessions.router.js';
 import __dirname, { addLogger, infoPeticionRuta } from './utils.js';
 import { Server } from 'socket.io';
 import routerCarrito from './router/carrito.router.js';
-import ContendedorMessageMongo from './daos/classMessagesMongo.js';
+// import ContendedorMessageMongo from './daos/classMessagesMongo.js';
 import { schema, normalize, denormalize } from "normalizr";
 import passport from 'passport';
 import initPassport from './config/passport.config.js';
 import dotenv from './config/dotenv.js';
-import {fork} from 'child_process'
 import os from 'os';
 import cluster from 'cluster';
 import args from 'minimist';
 
 
-const producto = new exportadoDeContendedores[0]('productos')
-const messages = new ContendedorMessageMongo()
+
+// const producto = new exportadoDeContendedores[0]('productos')
+// const messages = new ContendedorMessageMongo()
 
 const app = express()
 
@@ -212,7 +213,7 @@ async function funcionNormalizr() {
 
 io.on('connection', async socket => {
 
-  const productJson = await producto.getAll()
+  const productJson = await servicioProductos.getAll()
   io.emit('sendProducts', productJson)
 
   socket.on('message', async data => {

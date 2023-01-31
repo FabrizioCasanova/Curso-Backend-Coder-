@@ -1,19 +1,19 @@
-import messagesModel from "../models/messagesModel.js"
+// import messagesModel from "../models/messagesModel.js"
 
-class ContendedorMessageMongo {
+// class ContendedorMessageMongo {
    
-    save = async (object) => {
+//     save = async (object) => {
 
-        return await messagesModel.create(object)
+//         return await messagesModel.create(object)
 
-    }
+//     }
 
-    getAll = async () => {
+//     getAll = async () => {
 
-        return await messagesModel.find({})
+//         return await messagesModel.find({})
 
-    }
+//     }
 
-}
+// }
 
-export default ContendedorMessageMongo
+// export default ContendedorMessageMongo

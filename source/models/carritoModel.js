@@ -1,19 +1,44 @@
-import mongoose from 'mongoose'
+export default class Carrito {
+    
+    static get model(){
+        return 'carrito'
+    }
 
-const collection = 'carrito'
-const schema = new mongoose.Schema({
-
-    timestamp: {
-        type: String,
-        require: true
+    static get schema(){
+       return {
+    
+        timestamp: {
+            type: String,
+            require: true
     },
 
-    carrito: {
-        type: Array,
-        require: true
+        carrito: {
+            type: Array,
+            require: true
     }
-})
+    } 
+    }
+    }
 
-const carritoModel = mongoose.model(collection,schema)
 
-export default carritoModel
+
+
+// import mongoose from 'mongoose'
+
+// const collection = 'carrito'
+// const schema = new mongoose.Schema({
+
+//     timestamp: {
+//         type: String,
+//         require: true
+//     },
+
+//     carrito: {
+//         type: Array,
+//         require: true
+//     }
+// })
+
+// const carritoModel = mongoose.model(collection,schema)
+
+// export default carritoModel

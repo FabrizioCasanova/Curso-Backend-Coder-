@@ -1,8 +1,9 @@
 import { Router } from "express";
-import exportadoDeContendedores from "../daos/config.js";
+// import exportadoDeContendedores from "../daos/config.js";
+import { servicioProductos } from "../service/repositorios/servicios.js";
 
 
-const container = new exportadoDeContendedores[0]('productos') 
+// const container = new exportadoDeContendedores[0]('productos') 
 
 const router = Router()
 
@@ -14,12 +15,12 @@ router.get('/', async (req,res)=>{
 
 router.post('/form', async (req,res)=> {
     const datos = req.body
-    await container.save(datos)
+    await servicioProductos.save(datos)
    res.redirect('/')
 })
 
 router.get('/renderProducts', async (req,res)=>{
-    const arrayProductos = await container.getAll()
+    const arrayProductos = await servicioProductos.getAll()
     res.send({arrayProductos})
 })
 
@@ -31,7 +32,7 @@ router.get('/chat', (req,res)=>{
 
 router.get('/:id', async (req,res)=>{
     const {id} = req.params
-    const object = await container.getById(id)
+    const object = await servicioProductos.getById(id)
     if(object != null){  
        res.send(object)
     } else if (req.url !== "/favicon.ico") { // Parche momentaneo de favicon (borrarlo mas adelante)
@@ -49,24 +50,9 @@ router.post('/', async (req, res) => {
     }
 
     const objeto = req.body;
-    await container.save(objeto)
+    await servicioProductos.save(objeto)
     res.send(objeto)
 
-})
-
-router.put('/:id', async (req,res)=>{
-
-    const {id} = req.params;
-    
-    if(administrador === false ){
-        req.logger.error(`Ruta: '/${id}', Metodo PUT no autorizado`)
-        return res.send({error: -1, descripcion: `Ruta: '/${id}', Metodo PUT no autorizado`})
-    }
-    
-   
-    let objeto = req.body;
-    await container.updateFile(objeto, id)
-    res.send(`Objeto con ID ${id} Actualizado`)
 })
 
 router.delete('/:id', async (req,res) =>{
@@ -78,10 +64,10 @@ router.delete('/:id', async (req,res) =>{
         return res.send({error: -1, descripcion: `Ruta: '/${id}', Metodo DELETE no autorizado`})
     }
 
-    const arrayProductos = await container.getAll()
+    const arrayProductos = await servicioProductosy.getAll()
     const longitudArray = arrayProductos.length //previo a borrar el producto
-    await container.deleteById(id)
-    const newArrayProductos = await container.getAll()
+    await servicioProductos.deleteById(id)
+    const newArrayProductos = await servicioProductos.getAll()
     if(newArrayProductos.length < longitudArray){
         res.send(`objeto con ID ${id} eliminado`)
     } else {
