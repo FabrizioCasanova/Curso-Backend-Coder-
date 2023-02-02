@@ -1,10 +1,11 @@
 import mongoose from "mongoose";
 import Productos from "../models/productModel.js";
 import Carrito from "../models/carritoModel.js";
+import dotenv from "../config/dotenv.js";
 
 export default class DaoCentralizado {
     constructor(){
-        this.connection = mongoose.connect('mongodb+srv://DataBaseCoder:6xjrrip30r3RbqCT@codercluster.vgx1dq2.mongodb.net/DatabaseMongo?retryWrites=true&w=majority')
+        this.connection = mongoose.connect(`mongodb+srv://${dotenv.mongo.USER}:${dotenv.mongo.PASSWORD}@codercluster.vgx1dq2.mongodb.net/${dotenv.mongo.DATABASE}?retryWrites=true&w=majority`)
         const timestamps = {timestamps: {createdAt: 'created_at', updatedAt: 'updated_at'}}
     
         const productsSchema = mongoose.Schema(Productos.schema, timestamps)

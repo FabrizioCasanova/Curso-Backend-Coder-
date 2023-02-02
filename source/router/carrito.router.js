@@ -114,7 +114,6 @@ router.post('/cart', async (req,res) => {
     cart.push(orden)
 
    await modelUsers.updateOne({_id: perfil.id},{$set:{cart:cart}})
-
   
 })
 

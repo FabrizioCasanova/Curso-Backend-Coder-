@@ -92,8 +92,8 @@ app.use(passport.session())
 app.use(addLogger)
 app.use(infoPeticionRuta)
 
-app.use(express.json()); // Especifica que podemos recibir json
-app.use(express.urlencoded({ extended: true })); // Habilita poder procesar y parsear datos más complejos en la url
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/info', async (req,res) =>{
   res.render('info')
@@ -102,9 +102,8 @@ app.get('/info', async (req,res) =>{
 app.get('/api/random', async (req,res) => { 
 
   const {cant} = req.query
-
   
-    const obj = {
+  const obj = {
 
     }
 
@@ -119,11 +118,8 @@ app.get('/api/random', async (req,res) => {
         for (let i = 1; i <= cant; i++) {
 
             const numeroRandom = Math.floor(Math.random() * 1000 + 1)
-
             obj[numeroRandom]++
-
         }
-
     } else {
 
         for (let i = 1; i <= 100000000; i++) {
@@ -131,18 +127,10 @@ app.get('/api/random', async (req,res) => {
             const numeroRandom = Math.floor(Math.random() * 1000 + 1)
 
             obj[numeroRandom]++
-
         }
-
     }
-    
     res.send(obj)
-
 })
-
-  // const processChild = fork(__dirname + '/calculoPesado.js')
-  //processChild.send({cant})
-  //processChild.on('message', object => {
 
 app.use('/', router)
 app.use('/api/carrito', routerCarrito)
@@ -161,7 +149,6 @@ app.get('/api/form/login', async (req,res) =>{
   res.render('login')
 })
 
-
 app.get('/api/form/perfil', async (req,res) => {
   
   const perfil = req.session.user
@@ -175,41 +162,6 @@ if (perfil === undefined) {
 app.get('/api/form/chat', async (req,res)=>{
   res.render('formChat')
 })
-
-app.get('/api/messages/normalizr', async (req,res)=>{
-    res.send(await funcionNormalizr())
-})
-
-async function funcionNormalizr() {
-    
-  let messagesJson = await messages.getAll()
-
-  const usuario = new schema.Entity('usuario')
-  const content = new schema.Entity('contenido', {
-    author: usuario
-  }, { idAttribute: "_id" })
-
-  const todosLosMensajes = new schema.Entity('allMessages', {
-
-    mensajes: [content]
-  })
-
-    const objetoANormalizar = {
-      id: 'mensajes',
-      mensajes: messagesJson
-      
-    }
-
-    objetoANormalizar.mensajes =  JSON.stringify(objetoANormalizar.mensajes, null, "\t") 
-    objetoANormalizar.mensajes = JSON.parse(objetoANormalizar.mensajes)
-
-  const dataNormalizada = normalize(objetoANormalizar, todosLosMensajes)
-  console.log(JSON.stringify(dataNormalizada, null, "\t") )
-  return dataNormalizada
-
-  const dataDenormalizada = denormalize(dataNormalizada.result, todosLosMensajes, dataNormalizada.entities)
-
-}
 
 io.on('connection', async socket => {
 
