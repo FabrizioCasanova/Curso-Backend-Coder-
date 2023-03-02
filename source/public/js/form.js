@@ -3,8 +3,49 @@ const socket = io()
 
 const botonDesloguearse = document.getElementById('botonDesloguearse')
 const productos = document.getElementById('productos')
+const formProducts = document.getElementById('formProducts')
 
+formProducts?.addEventListener('submit', async (e) => {
 
+    let error = false
+
+    e.preventDefault()
+    const dataForm = new FormData(formProducts)
+    const objetoForm = {}
+    dataForm.forEach((value, key) => {
+        
+        if(value === ''){
+
+            error = true    
+            return null
+
+        } else {
+
+        objetoForm[key] = value
+
+        }
+    })
+
+        if(error === false){
+            await fetch('/form', {
+                method: 'POST',
+                body: JSON.stringify(objetoForm),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(result => result.json()).then(
+                location.reload()
+            )
+        } else {
+            
+            Swal.fire({
+                icon: 'error',
+                title: "Faltan campos por completar"
+        }).then( ()=> {
+            location.reload()})
+        }
+       
+})
 socket.on('sendProducts', data => {
 
     let card = ''
@@ -60,14 +101,6 @@ socket.on('sendProducts', data => {
             }
 
         })
-
-        if(parseInt(contador.innerText) === 0){
-                console.log(0)
-            
-        } else {
-            console.log(10)
-        }
-
         botonAgregarCarrito.addEventListener('click', async ()=> {
             const card = data[indice]
 
@@ -81,14 +114,28 @@ socket.on('sendProducts', data => {
 
             }
 
-            if(parseInt(contador.innerText) === 0){
+            const user = await fetch('api/sessions/user').then(result => result.json())
+
+
+            if(parseInt(contador.innerText) === 0 && !(user.role === "admin") || user.status === "error" && parseInt(contador.innerText) > 0 ){
                 
                 Swal.fire({
                     icon: 'error',
                     title: "Selecciona la cantidad de productos a comprar."
             })
             
+            } else if(user.role === "admin" || user.role === "admin" && parseInt(contador.innerText) === 0 ){
+
+                Swal.fire({
+                    icon: 'error',
+                    title: `Eres admin`,
+                    footer: `No puede agregar productos al carrito debido a tu rol</a>`
+                }).then(async()=>{
+                    location.reload()
+                })
+
             } else {
+
                 fetch('api/carrito/cart', {
                     method: 'POST',
                     body: JSON.stringify(orden),
@@ -107,10 +154,18 @@ socket.on('sendProducts', data => {
                 })
             }
 
+            if(user.status === "error"){
 
+                Swal.fire({
+                    icon: 'error',
+                    title: `Sesion de usuario inexistente`,
+                    footer: `Primero debe loguearse haciendo click <a style="margin-left: 5px;" href="api/form/login"> aqui </a>`
+                }).then(async()=>{
+                    location.reload()
+                })
+            }
             
         })
-
     })
 })
 
@@ -135,11 +190,8 @@ botonDesloguearse.addEventListener('click', async () => {
 
         Swal.fire({
             icon: 'error',
-            title: `Sesion de usuario inexistente`
+            title: `Sesion de usuario inexistente`,
+            footer: `Primero debe loguearse haciendo click <a style="margin-left: 5px;" href="api/form/login"> aqui </a>`
         })
-
     }
-
-
 })
-

@@ -14,6 +14,11 @@ export default {
         DATABASE : process.env.MONGO_DB,
         SECRET: process.env.MONGO_SESSION_SECRET,
         URL: process.env.MONGO_URL
+    },
+
+    admin: {
+        MAIL : process.env.MAIL_ADMIN,
+        PASSWORD : process.env.PASSWORD_ADMIN
     }
     
 

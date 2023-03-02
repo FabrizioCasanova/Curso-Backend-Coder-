@@ -13,56 +13,53 @@
 
     <nav>
         <ul>
+            
             <li>
-               <a href="/">Formulario</a> 
-            </li>
-    
-            <li>
-                <a href="/chat">Chat</a> 
-             </li>
-
-             <li>
-                <a href="api/form/perfil">Perfil</a>
-             </li>
-
-             <li>
-                <a href="api/carrito/cart">Carrito</a>
-             </li>
-
-             <li>
                 <a href="api/form/register">Registrate</a>
              </li>
 
              <li>
                 <a href="api/form/login">Logueate</a>
              </li>
+            
+            <li>
+               <a href="/">Productos</a> 
+            </li>
+            
+             <li>
+                <a href="api/carrito/cart">Carrito</a>
+             </li>
 
-        </ul>
+             <li>
+                <a href="api/form/perfil">Perfil</a>
+             </li>
+
+        </ul> 
     </nav>
 
-<div style="margin-bottom: 3%;" id="divLogin">
+    <button style="height: 33px; width: 122px; margin: 2px 0 20px 5px; font-family: revert; font-size: 13px;" id="botonDesloguearse">Deslogueate</button>
 
-    <button id="botonDesloguearse">Deslogueate</button>
+<% if (perfil?.role === 'admin') { %>
 
-</div>
+    <form id="formProducts" style="margin-left: 2%, d;">
 
-
-<form style="margin-left: 2%, d;" action="/form" method="post">
-
-    <label for="text">Nombre</label>
-    <input type="text" name="nombre"> 
-    <label for="text">Marca</label>
-    <input type="text" name="marca">
-    <label for="text">Precio</label>
-    <input type="text" name="precio">
-    <label for="text">Stock</label>
-    <input type="text" name="stock">
-    <label for="text">Imagen</label>
-    <input type="text" name="imagen">
+        <label for="text">Nombre</label>
+        <input type="text" name="nombre"> 
+        <label for="text">Marca</label>
+        <input type="text" name="marca">
+        <label for="text">Precio</label>
+        <input type="text" name="precio">
+        <label for="text">Stock</label>
+        <input type="text" name="stock">
+        <label for="text">Imagen</label>
+        <input type="text" name="imagen">
+        
+        <button type="submit">Enviar</button>
     
-    <button type="submit">Enviar</button>
+    </form>
 
-</form>
+<% } %>
+
 
 <div style="margin: 3%;" id="productos">
 

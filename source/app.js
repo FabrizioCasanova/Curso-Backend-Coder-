@@ -2,14 +2,11 @@ import express from 'express'
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import { servicioProductos } from './service/repositorios/servicios.js';
-// import exportadoDeContendedores from './daos/config.js';
 import router from './router/productos.router.js'
 import routerSessions from './router/sessions.router.js';
 import __dirname, { addLogger, infoPeticionRuta } from './utils.js';
 import { Server } from 'socket.io';
 import routerCarrito from './router/carrito.router.js';
-// import ContendedorMessageMongo from './daos/classMessagesMongo.js';
-import { schema, normalize, denormalize } from "normalizr";
 import passport from 'passport';
 import initPassport from './config/passport.config.js';
 import dotenv from './config/dotenv.js';
@@ -17,18 +14,11 @@ import os from 'os';
 import cluster from 'cluster';
 import args from 'minimist';
 
-
-
-// const producto = new exportadoDeContendedores[0]('productos')
-// const messages = new ContendedorMessageMongo()
-
 const app = express()
 
 let server
 
 const PORT = dotenv.app.PORT || 8080
-
-//const server = app.listen(PORT, () => console.log('Estoy escuchando en express'))
 
 const modulesCpus = os.cpus().length;
 
@@ -95,10 +85,6 @@ app.use(infoPeticionRuta)
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/info', async (req,res) =>{
-  res.render('info')
-})
-
 app.get('/api/random', async (req,res) => { 
 
   const {cant} = req.query
@@ -149,31 +135,29 @@ app.get('/api/form/login', async (req,res) =>{
   res.render('login')
 })
 
+app.get('/api/form/errorPage', async (req,res)=> {
+  res.render('errorPage')
+})
+
+app.get('/api/form/errorAdminPage', async (req,res)=> {
+  res.render('errorAdminPage')
+})
+
 app.get('/api/form/perfil', async (req,res) => {
   
   const perfil = req.session.user
 
 if (perfil === undefined) {
-    res.redirect("/api/form/login")
+    res.redirect('/api/form/errorPage')
 } else 
 {res.render("perfil", { perfil })}
 })
 
-app.get('/api/form/chat', async (req,res)=>{
-  res.render('formChat')
-})
-
-io.on('connection', async socket => {
+io.on('connection', async (req,res) => {
 
   const productJson = await servicioProductos.getAll()
   io.emit('sendProducts', productJson)
 
-  socket.on('message', async data => {
-
-    await messages.save(data)
-    funcionNormalizr()
-
-  })
 })
 
 app.all("*", (req, res)=> {

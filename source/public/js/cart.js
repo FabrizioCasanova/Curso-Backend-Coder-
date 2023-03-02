@@ -3,9 +3,7 @@ const botonEliminarProductosCarrito = document.getElementById('botonEliminarProd
 
 botonFinalizarCompra.addEventListener('click', async (e)  => {
 
-
     const response = await fetch('../../api/carrito/email')
-
 
     if(response.status === 400){
         

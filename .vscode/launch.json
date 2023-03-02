@@ -18,7 +18,9 @@
                 "MONGO_PASSWORD" : "6xjrrip30r3RbqCT",
                 "MONGO_DB" : "DatabaseMongo",
                 "MONGO_SESSION_SECRET" : "greas1f651rw6y4he6y4645",
-                "MONGO_URL" : "mongodb+srv:DataBaseCoder:6xjrrip30r3RbqCT@codercluster.vgx1dq2.mongodb.net/testing?retryWrites=true&w=majority"
+                "MONGO_URL" : "mongodb+srv:DataBaseCoder:6xjrrip30r3RbqCT@codercluster.vgx1dq2.mongodb.net/testing?retryWrites=true&w=majority",
+                "MAIL_ADMIN" : "mauricioespinosa@outlook.com",
+                "PASSWORD_ADMIN" : "roladmin"
             },
             "runtimeExecutable": "nodemon"
 

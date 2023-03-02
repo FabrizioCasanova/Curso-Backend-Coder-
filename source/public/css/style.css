@@ -17,12 +17,6 @@ body{
     overflow-y: scroll;
 }
 
-.container-hodlerChat{
-    height: 24px;
-
-}
-
-
 #panelLog{
     font-family: monospace;
     font-size: large;
@@ -31,30 +25,8 @@ body{
     margin-left: 22px;
 }
 
-#placeholderChat{
-    height: 100%;
-    width: 50%;    
-    margin-right: 2%;
-    border-radius: 13px;
-
-}
-
 .btn-dark{
     cursor: pointer;
     border-radius: 40px;
-}
-
-.container-chat{
-    height: 76%;
-    width: 98%;
-    margin-top: 50px;
-}
-
-.containerTitleChat{
-    background-color: antiquewhite;
-    display: flex;
-    height: 75px;
-    align-items: center;
-    justify-content: center;
 }
 

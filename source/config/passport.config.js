@@ -3,6 +3,7 @@ import local from 'passport-local'
 import { hashForPassword, validationOfPassword  } from "../utils.js";
 import modelUsers from "../models/users.js";
 import server from "../app.js";
+import dotenv from "./dotenv.js";
 
 
 const localStrategy = local.Strategy
@@ -41,8 +42,32 @@ function initPassport (){
     passport.use('login', new localStrategy({usernameField: 'email'}, async (email,password,done)=>{
         
 try{
+
+    if(email === dotenv.admin.MAIL){
         
-    const existUser = await modelUsers.findOne({ email })
+        if(password === dotenv.admin.PASSWORD){
+            
+            const administrador = {
+                _id : 156546814465,
+                nombre : "Usuario",
+                apellido : "Administrativo",
+                email,
+                password,
+                image : 'https://thumbs.dreamstime.com/b/icono-de-administrador-vectorial-avatar-perfil-persona-usuario-masculino-con-rueda-engranaje-para-configuraci%C3%B3n-y-en-pictograma-150138136.jpg',
+                role : 'admin'
+            }
+
+            done(null, administrador)
+
+        } else {
+
+            return done(null,false, {message: "Contraseña Incorrecta"})
+
+        }
+
+    } else {
+    
+        const existUser = await modelUsers.findOne({ email })
 
     if (!existUser) return done(null,false, {message: "Correo Incorrecto"})
     
@@ -50,7 +75,8 @@ try{
     if(!passwordValid) return done(null,false, {message: "Contraseña Incorrecta"})
     
     done(null,existUser)
-    
+    }
+
 }catch(error){
 
     done(error)

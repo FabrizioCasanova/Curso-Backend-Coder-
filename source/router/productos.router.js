@@ -1,16 +1,15 @@
 import { Router } from "express";
-// import exportadoDeContendedores from "../daos/config.js";
 import { servicioProductos } from "../service/repositorios/servicios.js";
-
-
-// const container = new exportadoDeContendedores[0]('productos') 
 
 const router = Router()
 
 let administrador = true 
 
 router.get('/', async (req,res)=>{ 
-  res.render('home')
+
+    const perfil = req.session.user
+
+  res.render('home', {perfil: perfil})
 })
 
 router.post('/form', async (req,res)=> {
@@ -19,26 +18,14 @@ router.post('/form', async (req,res)=> {
    res.redirect('/')
 })
 
-router.get('/renderProducts', async (req,res)=>{
-    const arrayProductos = await servicioProductos.getAll()
-    res.send({arrayProductos})
-})
-
-
-router.get('/chat', (req,res)=>{
-    res.render('chat')
-})
-
-
 router.get('/:id', async (req,res)=>{
     const {id} = req.params
     const object = await servicioProductos.getById(id)
     if(object != null){  
        res.send(object)
-    } else if (req.url !== "/favicon.ico") { // Parche momentaneo de favicon (borrarlo mas adelante)
+    } else if (req.url !== "/favicon.ico") { 
         req.logger.error("Objeto no encontrado")
         res.send('Objeto no encontrado')
-        
     }   
 })
 
@@ -64,8 +51,8 @@ router.delete('/:id', async (req,res) =>{
         return res.send({error: -1, descripcion: `Ruta: '/${id}', Metodo DELETE no autorizado`})
     }
 
-    const arrayProductos = await servicioProductosy.getAll()
-    const longitudArray = arrayProductos.length //previo a borrar el producto
+    const arrayProductos = await servicioProductos.getAll()
+    const longitudArray = arrayProductos.length
     await servicioProductos.deleteById(id)
     const newArrayProductos = await servicioProductos.getAll()
     if(newArrayProductos.length < longitudArray){
@@ -75,7 +62,5 @@ router.delete('/:id', async (req,res) =>{
         res.send('No se encontro el objeto')
     }
 })
-
-
 
 export default router
